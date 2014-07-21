@@ -7,7 +7,7 @@ import (
 )
 
 type GuardianBackend struct {
-	systemInfo    system_info.Provider
+	systemInfo system_info.Provider
 }
 
 func New(systemInfo system_info.Provider) *GuardianBackend {
@@ -39,5 +39,5 @@ func (b *GuardianBackend) Capacity() (warden.Capacity, error) {
 }
 
 func (b *GuardianBackend) Create(spec warden.ContainerSpec) (warden.Container, error) {
-		panic(`unimplemented`)
+	panic(`unimplemented`)
 }
