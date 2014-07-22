@@ -14,16 +14,13 @@ import (
 
 func StartServer(depotPath string, listenNetwork string, listenAddr string, graceTime time.Duration) <-chan int {
 	backend := guardian_backend.New(depotPath)
-	runServer(backend, listenNetwork, listenAddr, graceTime)
-
-	exitChan := make(chan int, 1)
-	exitChan <- 0
-	return exitChan
+	return runServer(backend, listenNetwork, listenAddr, graceTime)
 }
 
-func runServer(backend warden.Backend, listenNetwork string, listenAddr string, graceTime time.Duration) {
+func runServer(backend warden.Backend, listenNetwork string, listenAddr string, graceTime time.Duration) <-chan int {
 	wardenServer := server.New(listenNetwork, listenAddr, graceTime, backend)
 
+	// TODO[gn]: this should be deferred until the backend is started.
 	err := wardenServer.Start()
 	if err != nil {
 		log.Fatalln("failed to start:", err)
@@ -31,9 +28,14 @@ func runServer(backend warden.Backend, listenNetwork string, listenAddr string, 
 
 	log.Println("server started; listening with", listenNetwork, "on", listenAddr)
 
+	// TODO[sp]: make runServer asynchronous
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	<-signals
 	log.Println("stopping server...")
 	wardenServer.Stop()
+
+	exitChan := make(chan int, 1)
+	exitChan <- 0
+	return exitChan
 }

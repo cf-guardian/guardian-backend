@@ -3,6 +3,7 @@ package guardian_backend
 
 import (
 	"github.com/cloudfoundry-incubator/garden/warden"
+	"github.com/cf-guardian/guardian-backend/container"
 	"github.com/cf-guardian/guardian-backend/system_info"
 	"time"
 )
@@ -36,11 +37,16 @@ func (b *guardianBackend) Capacity() (warden.Capacity, error) {
 	return warden.Capacity{
 		MemoryInBytes: totalMemory,
 		DiskInBytes:   totalDisk,
-		MaxContainers: 0, // TODO: should be non-zero
+		MaxContainers: 0, // TODO[gn]: should this be non-zero?
 	}, nil
 }
 
 func (b *guardianBackend) Create(spec warden.ContainerSpec) (warden.Container, error) {
+	_, err := container.New(spec)
+	if err != nil {
+		return nil, err
+	}
+	// TODO[sp]: container management
 	panic(`unimplemented`)
 }
 
@@ -56,8 +62,10 @@ func (b *guardianBackend) Lookup(handle string) (warden.Container, error) {
 	panic(`unimplemented`)
 }
 
+// Start the backend.
 func (b *guardianBackend) Start() error {
-	panic(`unimplemented`)
+	// TODO: is recovery required?
+	return nil
 }
 
 func (b *guardianBackend) Stop() {
