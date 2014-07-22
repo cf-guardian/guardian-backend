@@ -8,28 +8,30 @@ import (
 	"runtime"
 )
 
-var listenNetwork = flag.String(
-	"listenNetwork",
-	"unix",
-	"listener protocol (unix, tcp, etc. - see net.Listen)",
-)
+var (
+	listenNetwork = flag.String(
+		"listenNetwork",
+		"unix",
+		"listener protocol (unix, tcp, etc. - see net.Listen)",
+	)
 
-var listenAddr = flag.String(
-	"listenAddr",
-	"/tmp/warden.sock",
-	"listener address (see net.Listen)",
-)
+	listenAddr = flag.String(
+		"listenAddr",
+		"/tmp/warden.sock",
+		"listener address (see net.Listen)",
+	)
 
-var depotPath = flag.String(
-	"depot",
-	"",
-	"directory in which to store containers",
-)
+	depotPath = flag.String(
+		"depot",
+		"",
+		"directory in which to store containers",
+	)
 
-var containerGraceTime = flag.Duration(
-	"containerGraceTime",
-	0,
-	"time after which to destroy idle containers",
+	containerGraceTime = flag.Duration(
+		"containerGraceTime",
+		0,
+		"time after which to destroy idle containers",
+	)
 )
 
 func main() {
