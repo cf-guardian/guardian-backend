@@ -2,9 +2,9 @@
 package guardian_backend
 
 import (
-	"github.com/cloudfoundry-incubator/garden/warden"
 	"github.com/cf-guardian/guardian-backend/container"
 	"github.com/cf-guardian/guardian-backend/system_info"
+	"github.com/cloudfoundry-incubator/garden/warden"
 	"time"
 )
 
