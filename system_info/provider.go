@@ -1,7 +1,7 @@
 package system_info
 
 import (
-	"github.com/cloudfoundry/gosigar"
+	sigar "github.com/cloudfoundry/gosigar"
 )
 
 type Provider interface {

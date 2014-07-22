@@ -2,16 +2,10 @@ package main
 
 import (
 	"flag"
+	"github.com/cf-guardian/guardian-backend/guardian/server"
 	"log"
 	"os"
-	"os/signal"
 	"runtime"
-	"syscall"
-	"time"
-
-	"github.com/cloudfoundry-incubator/garden/server"
-	"github.com/cf-guardian/guardian-backend/guardian_backend"
-	"github.com/cloudfoundry-incubator/garden/warden"
 )
 
 var listenNetwork = flag.String(
@@ -19,7 +13,6 @@ var listenNetwork = flag.String(
 	"unix",
 	"listener protocol (unix, tcp, etc. - see net.Listen)",
 )
-
 
 var listenAddr = flag.String(
 	"listenAddr",
@@ -45,31 +38,13 @@ func main() {
 	flag.Parse()
 
 	if *depotPath == "" {
-		log.Fatalln("must specify -depot with linux backend")
+		log.Fatalln("must specify -depot with guardian backend")
 	}
 
-	backend := guardian_backend.New(*depotPath)
-
-	runServer(backend, *listenNetwork, *listenAddr, *containerGraceTime)
+	os.Exit(<-server.StartServer(*depotPath, *listenNetwork, *listenAddr, *containerGraceTime))
 }
 
-func runServer(backend warden.Backend, listenNetwork string, listenAddr string, graceTime time.Duration) {
-	wardenServer := server.New(listenNetwork, listenAddr, graceTime, backend)
-
-	err := wardenServer.Start()
-	if err != nil {
-		log.Fatalln("failed to start:", err)
-	}
-
-	log.Println("server started; listening with", listenNetwork, "on", listenAddr)
-
-	signals := make(chan os.Signal, 1)
-	signal.Notify(signals, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
-	<-signals
-	log.Println("stopping server...")
-	wardenServer.Stop()
-}
-
+// Use all CPUs for scheduling goroutines. The default in Go 1.3 is to use only one CPU.
 func optimiseScheduling() {
 	cpus := runtime.NumCPU()
 	prevMaxProcs := runtime.GOMAXPROCS(cpus)
