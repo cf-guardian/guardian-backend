@@ -3,24 +3,26 @@ package guardian_backend
 
 import (
 	"github.com/cloudfoundry-incubator/garden/warden"
-	"github.com/cloudfoundry-incubator/warden-linux/system_info"
+	"github.com/cf-guardian/guardian-backend/system_info"
+	"time"
 )
 
-type GuardianBackend struct {
+type guardianBackend struct {
 	systemInfo system_info.Provider
 }
 
-func New(systemInfo system_info.Provider) *GuardianBackend {
-	return &GuardianBackend{
+func New(depotPath string) warden.Backend {
+	systemInfo := system_info.NewProvider(depotPath)
+	return &guardianBackend{
 		systemInfo: systemInfo,
 	}
 }
 
-func (b *GuardianBackend) Ping() error {
+func (b *guardianBackend) Ping() error {
 	return nil
 }
 
-func (b *GuardianBackend) Capacity() (warden.Capacity, error) {
+func (b *guardianBackend) Capacity() (warden.Capacity, error) {
 	totalMemory, err := b.systemInfo.TotalMemory()
 	if err != nil {
 		return warden.Capacity{}, err
@@ -38,6 +40,30 @@ func (b *GuardianBackend) Capacity() (warden.Capacity, error) {
 	}, nil
 }
 
-func (b *GuardianBackend) Create(spec warden.ContainerSpec) (warden.Container, error) {
+func (b *guardianBackend) Create(spec warden.ContainerSpec) (warden.Container, error) {
+	panic(`unimplemented`)
+}
+
+func (b *guardianBackend) Destroy(handle string) error {
+	panic(`unimplemented`)
+}
+
+func (b *guardianBackend) Containers(warden.Properties) ([]warden.Container, error) {
+	panic(`unimplemented`)
+}
+
+func (b *guardianBackend) Lookup(handle string) (warden.Container, error) {
+	panic(`unimplemented`)
+}
+
+func (b *guardianBackend) Start() error {
+	panic(`unimplemented`)
+}
+
+func (b *guardianBackend) Stop() {
+	panic(`unimplemented`)
+}
+
+func (b *guardianBackend) GraceTime(warden.Container) time.Duration {
 	panic(`unimplemented`)
 }
