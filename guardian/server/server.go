@@ -19,14 +19,12 @@ func StartServer(depotPath string, listenNetwork string, listenAddr string, grac
 
 func runServer(backend warden.Backend, listenNetwork string, listenAddr string, graceTime time.Duration) <-chan int {
 	wardenServer := server.New(listenNetwork, listenAddr, graceTime, backend)
-
-	// TODO[gn]: this should be deferred until the backend is started.
 	err := wardenServer.Start()
 	if err != nil {
-		log.Fatalln("failed to start:", err)
+		log.Fatalln("failed to start server:", err)
 	}
 
-	log.Println("server started; listening with", listenNetwork, "on", listenAddr)
+	log.Println("server started; listening over", listenNetwork, "on", listenAddr)
 
 	// TODO[sp]: make runServer asynchronous
 	signals := make(chan os.Signal, 1)
