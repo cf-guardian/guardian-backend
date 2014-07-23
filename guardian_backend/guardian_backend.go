@@ -37,7 +37,7 @@ func (b *guardianBackend) Capacity() (warden.Capacity, error) {
 	return warden.Capacity{
 		MemoryInBytes: totalMemory,
 		DiskInBytes:   totalDisk,
-		MaxContainers: 0, // TODO[gn]: should this be non-zero?
+		MaxContainers: 0, // TODO: needs calculating
 	}, nil
 }
 
