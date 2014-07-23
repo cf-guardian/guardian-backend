@@ -3,9 +3,9 @@ package main
 import (
 	"flag"
 	"github.com/cf-guardian/guardian-backend/guardian/server"
+	"github.com/cf-guardian/guardian-backend/utils"
 	"log"
 	"os"
-	"runtime"
 )
 
 var (
@@ -35,8 +35,6 @@ var (
 )
 
 func main() {
-	optimiseScheduling()
-
 	flag.Parse()
 
 	if *depotPath == "" {
@@ -46,9 +44,6 @@ func main() {
 	os.Exit(<-server.StartServer(*depotPath, *listenNetwork, *listenAddr, *containerGraceTime))
 }
 
-// Use all CPUs for scheduling goroutines. The default in Go 1.3 is to use only one CPU.
-func optimiseScheduling() {
-	cpus := runtime.NumCPU()
-	prevMaxProcs := runtime.GOMAXPROCS(cpus)
-	log.Println("GOMAXPROCS set to", cpus, "from", prevMaxProcs)
+func init() {
+	utils.OptimiseScheduling()
 }
