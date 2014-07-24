@@ -12,19 +12,26 @@ import (
 	"github.com/cloudfoundry-incubator/garden/warden"
 )
 
-func StartServer(depotPath string, listenNetwork string, listenAddr string, graceTime time.Duration) <-chan int {
-	backend := guardian_backend.New(depotPath)
-	return runServer(backend, listenNetwork, listenAddr, graceTime)
+type Options struct {
+	DepotPath     string
+	ListenNetwork string
+	ListenAddr    string
+	GraceTime     time.Duration
 }
 
-func runServer(backend warden.Backend, listenNetwork string, listenAddr string, graceTime time.Duration) <-chan int {
-	wardenServer := server.New(listenNetwork, listenAddr, graceTime, backend)
+func StartServer(opts *Options) <-chan int {
+	backend := guardian_backend.New(opts.DepotPath)
+	return runServer(backend, opts)
+}
+
+func runServer(backend warden.Backend, opts *Options) <-chan int {
+	wardenServer := server.New(opts.ListenNetwork, opts.ListenAddr, opts.GraceTime, backend)
 	err := wardenServer.Start()
 	if err != nil {
 		log.Fatalln("failed to start server:", err)
 	}
 
-	log.Println("server started; listening over", listenNetwork, "on", listenAddr)
+	log.Println("server started; listening over", opts.ListenNetwork, "on", opts.ListenAddr)
 
 	// TODO[sp]: make runServer asynchronous
 	signals := make(chan os.Signal, 1)

@@ -41,7 +41,7 @@ func main() {
 		log.Fatalln("must specify -depot with guardian backend")
 	}
 
-	os.Exit(<-server.StartServer(*depotPath, *listenNetwork, *listenAddr, *containerGraceTime))
+	os.Exit(<-server.StartServer(&server.Options{*depotPath, *listenNetwork, *listenAddr, *containerGraceTime}))
 }
 
 func init() {
