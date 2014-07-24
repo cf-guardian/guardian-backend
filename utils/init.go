@@ -11,5 +11,6 @@ import (
 func OptimiseScheduling() {
 	cpus := runtime.NumCPU()
 	prevMaxProcs := runtime.GOMAXPROCS(cpus)
+	// TODO: the following is too chatty. Consider using glog for log levels.
 	log.Println("utils: GOMAXPROCS set to", cpus, "from", prevMaxProcs)
 }

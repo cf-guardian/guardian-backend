@@ -54,8 +54,8 @@ func (b *guardianBackend) Destroy(handle string) error {
 	panic(`unimplemented`)
 }
 
-func (b *guardianBackend) Containers(warden.Properties) ([]warden.Container, error) {
-	panic(`unimplemented`)
+func (b *guardianBackend) Containers(warden.Properties) (containers []warden.Container, err error) {
+	return // TODO[sp]: replace this temporary code
 }
 
 func (b *guardianBackend) Lookup(handle string) (warden.Container, error) {
@@ -69,7 +69,7 @@ func (b *guardianBackend) Start() error {
 }
 
 func (b *guardianBackend) Stop() {
-	panic(`unimplemented`)
+	return // TODO[sp]: replace this temporary code
 }
 
 func (b *guardianBackend) GraceTime(warden.Container) time.Duration {
