@@ -15,7 +15,7 @@ type Options struct {
 }
 
 // Returns the options corresponding to the command line flags after applying defaults.
-func ParseOptions() *Options {
+func Parse() *Options {
 	opts := Options{}
 
 	flag.StringVar(&opts.DepotPath, "depot", "", "directory in which to store containers")

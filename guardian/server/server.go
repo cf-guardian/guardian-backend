@@ -10,6 +10,7 @@ import (
 	"github.com/cf-guardian/guardian-backend/options"
 	"github.com/cloudfoundry-incubator/garden/server"
 	"github.com/cloudfoundry-incubator/garden/warden"
+	"github.com/cf-guardian/guardian-backend/utils"
 )
 
 func StartServer(opts *options.Options) <-chan int {
@@ -36,4 +37,8 @@ func runServer(backend warden.Backend, opts *options.Options) <-chan int {
 	exitChan := make(chan int, 1)
 	exitChan <- 0
 	return exitChan
+}
+
+func init() {
+	utils.OptimiseScheduling()
 }
