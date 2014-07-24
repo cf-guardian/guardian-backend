@@ -8,42 +8,29 @@ import (
 	"os"
 )
 
-var (
-	listenNetwork = flag.String(
-		"listenNetwork",
-		"unix",
-		"listener protocol (unix, tcp, etc. - see net.Listen)",
-	)
-
-	listenAddr = flag.String(
-		"listenAddr",
-		"/tmp/warden.sock",
-		"listener address (see net.Listen)",
-	)
-
-	depotPath = flag.String(
-		"depot",
-		"",
-		"directory in which to store containers",
-	)
-
-	containerGraceTime = flag.Duration(
-		"containerGraceTime",
-		0,
-		"time after which to destroy idle containers",
-	)
-)
-
+// Main program for warden server with guardian backend.
 func main() {
+	os.Exit(<-server.StartServer(parseOptions()))
+}
+
+func parseOptions() *server.Options {
+	opts := server.Options{}
+
+	flag.StringVar(&opts.DepotPath, "depot", "", "directory in which to store containers")
+	flag.StringVar(&opts.ListenNetwork, "listenNetwork", "unix", "listener network (see net.Listen)")
+	flag.StringVar(&opts.ListenAddr, "listenAddr", "/tmp/warden.sock", "listener address (see net.Listen)")
+	flag.DurationVar(&opts.GraceTime, "containerGraceTime", 0, "time after which to destroy idle containers")
+
 	flag.Parse()
 
-	if *depotPath == "" {
-		log.Fatalln("must specify -depot with guardian backend")
+	if opts.DepotPath == "" {
+		log.Fatalln("-depot must be specified")
 	}
 
-	os.Exit(<-server.StartServer(&server.Options{*depotPath, *listenNetwork, *listenAddr, *containerGraceTime}))
+	return &opts
 }
 
 func init() {
 	utils.OptimiseScheduling()
 }
+
