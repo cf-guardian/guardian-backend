@@ -54,9 +54,10 @@ Logging is performed using the [glog](https://github.com/golang/glog) package (a
 
 Logs may be directed to standard error by setting the flag `logtostderr` to `true` on the go invocation, as in this example:
 
-````
+```
 go test -logtostderr=true -vmodule=*=2
-````
+```
+
 Note: the glog `-v` flag clashes with the boolean `-v` flag of `go test` and so the logging verbosity should be set during testing using `-vmodule=*=`.
 
 See the [glog documentation](http://godoc.org/github.com/golang/glog) for further information.
@@ -74,9 +75,9 @@ There are a few places where we may implement only Linux versions of (usually lo
 
 Every such file will also record its constraints in build constraints in the file content. For example, even if a file is called `fred_linux.go` it will still contain this build constraint:
 
-````
+```
 // +build linux
-````
+```
 
 The rule to follow is: the build constriants are definitive and complete; the filenames are used to indicate the constraints. (Note: the build constraint `// +build !linux` must *not* be indicated by a file name ending in `_non_linux.go`. This will not work.)
 
@@ -92,12 +93,14 @@ The rule to follow is: the build constriants are definitive and complete; the fi
 
 2. Create a Go [workspace](http://golang.org/doc/code.html#Organization) directory, such as `$HOME/go`, and add the path of this directory to the
 beginning of a new environment variable called `GOPATH`. You might want to put this last step in your profile.
+
     ```
     $ mkdir $HOME/go
     $ export GOPATH=$HOME/go
     ```
 
 3. Get this repository into your workspace (`src` directory) by issuing:
+
     ```
     $ go get github.com/cf-guardian/guardian
     ```
@@ -105,6 +108,7 @@ beginning of a new environment variable called `GOPATH`. You might want to put t
 4. Change directory to `<workspace dir>/src/github.com/cf-guardian/guardian`.
 
 5. Install the [pre-commit hook](https://github.com/jbrukh/git-gofmt) as follows:
+
     ```
     cd .git/hooks
     ln -s ../../development/pre-commit-hook/pre-commit .
@@ -133,17 +137,27 @@ The directory `development/scripts` is there for simple (bash) shell scripts tha
 ## Testing
 
 To run the tests in a specific directory, issue:
+
 ```
 go test
 ```
 
 If the tests succeed, this should print `PASS`.
 
-#### gomock
+### gomock
 
 Unit testing is performed on packages. [gomock](http://godoc.org/code.google.com/p/gomock/gomock) is
 used as a mocking framework and to generate mock implementations of interfaces and thereby enable
 packages to be tested in isolation from each other.
+
+( Once you have installed Go, run these commands to install the gomock package and the mockgen tool:
+
+```
+go install code.google.com/p/gomock/gomock
+go install code.google.com/p/gomock/mockgen
+```
+
+See [gomock README](https://code.google.com/p/gomock/source/browse/README.md) for the rest of the instructions. )
 
 Mocks are stored in a subdirectory of the directory containing the mocked interface.
 For example, the mocks for the `kernel/fileutils` package are stored in `kernel/fileutils/mock_fileutils`.
@@ -156,6 +170,7 @@ If your favourite text editor is not sufficient, try [Eclipse](http://www.eclips
 
 Source code is formatted according to standard Go conventions. To re-format the code, and all its
 dependencies issue:
+
 ```
 go fmt ./...
 ```
