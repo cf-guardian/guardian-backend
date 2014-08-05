@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+SCRIPT_DIR="`dirname $0`"
+PRJ="$SCRIPT_DIR/../.."
+
+mockgen -source=$PRJ/kernel/fileutils/fileutils.go >$PRJ/kernel/fileutils/mock_fileutils/mock_fileutils.go
+mockgen -source=$PRJ/kernel/syscall/syscall.go >$PRJ/kernel/syscall/mock_syscall/mock_syscall.go
