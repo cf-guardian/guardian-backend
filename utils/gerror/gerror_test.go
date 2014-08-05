@@ -18,7 +18,7 @@ package gerror_test
 
 import (
 	"errors"
-	"github.com/cf-guardian/guardian/gerror"
+	"github.com/cf-guardian/guardian-backend/utils/gerror"
 	"strings"
 	"testing"
 )

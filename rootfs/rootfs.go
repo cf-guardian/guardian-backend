@@ -21,8 +21,8 @@ package rootfs
 
 import (
 	"github.com/cf-guardian/guardian-backend/utils/gerror"
-	"github.com/cf-guardian/guardian-backend/kernel/fileutils"
-	"github.com/cf-guardian/guardian/kernel/syscall"
+	"github.com/cf-guardian/guardian-backend/utils/fileutils"
+	"github.com/cf-guardian/guardian-backend/utils/syscall"
 	"github.com/golang/glog"
 	"io/ioutil"
 	"os"
