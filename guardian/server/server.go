@@ -3,7 +3,6 @@ package server
 import (
 	"log"
 	"os"
-	"os/signal"
 	"syscall"
 
 	"github.com/cf-guardian/guardian-backend/guardian_backend"
@@ -27,24 +26,19 @@ func runServer(backend warden.Backend, opts *options.Options) <-chan int {
 
 	log.Println("server started; listening over", opts.ListenNetwork, "on", opts.ListenAddr)
 
-	exitChan := make(chan int, 1)
-	go stopOnSignals(exitChan, func() int {
-		log.Println("stopping server...")
-		wardenServer.Stop()
-		return 0
-	}, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
+	return stopOnSignal(wardenServer)
+}
 
+func stopOnSignal(wardenServer *server.WardenServer) <-chan int {
+	exitChan := make(chan int, 1)
+	go utils.HandleSignals(func(os.Signal) int {
+			log.Println("stopping server...")
+			wardenServer.Stop()
+			return 0
+		}, exitChan, syscall.SIGINT, syscall.SIGTERM, syscall.SIGHUP)
 	return exitChan
 }
 
 func init() {
 	utils.OptimiseScheduling()
-}
-
-func stopOnSignals(exitChan chan int, stopFunc func() int, signals ...Signal) {
-	signalsChan := make(chan os.Signal, 1)
-	signal.Notify(signalsChan, signals...)
-	<-signalsChan
-
-	exitChan <- stopFunc()
 }
