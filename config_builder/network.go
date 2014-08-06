@@ -1,6 +1,20 @@
 package config_builder
 
 /*
+
+Configuration items to be defined for compatibility with warden-linux:
+
+* networkPool - a CIDR from which per-container /30 CIDRs are allocated.
+* portPoolStart - start of the ephemeral port range for mapped container ports
+* portPoolSize - size of ephemeral port range for mapped container ports
+* denyNetworks - CIDR blocks representing networks to blacklist
+* allowNetworks - CIDR blocks representing networks to whitelist
+
+Warden protocol operations:
+
+* NetIn - map a host port to a container port
+* NetOut - whitelist a network or IP address and optional port.
+
 Questions about network configuration, based on the configuration parameters of warden-linux:
 
 1. networkPool seems to be used to allocate IP addresses on the host and in the container. Why
