@@ -42,7 +42,7 @@ type syscallWrapper struct {
 	Constructs a new SyscallFS instance and returns it providing the effective user id
 	is root. Otherwise return an error.
 */
-func NewFS() (syscall.SyscallFS, error) {
+func newFS() (syscall.SyscallFS, gerror.Gerror) {
 	euid := os.Geteuid()
 	if euid != 0 {
 		return nil, gerror.Newf(ErrNotRoot, "Effective user id %d is not root", euid)

@@ -3,20 +3,25 @@ package guardian_backend
 
 import (
 	"github.com/cf-guardian/guardian-backend/container"
+	"github.com/cf-guardian/guardian-backend/rootfs"
 	"github.com/cf-guardian/guardian-backend/system_info"
 	"github.com/cloudfoundry-incubator/garden/warden"
 	"time"
+	"github.com/cf-guardian/guardian-backend/config_builder"
+	"github.com/cf-guardian/guardian-backend/utils/gerror"
+	"path/filepath"
 )
 
 type guardianBackend struct {
 	systemInfo system_info.Provider
+	rootfs rootfs.RootFS
 }
 
-func New(depotPath string) warden.Backend {
-	systemInfo := system_info.NewProvider(depotPath)
+func newGuardianBackend(depotPath string, rootfs rootfs.RootFS, configBuilder config_builder.ConfigBuilder) (warden.Backend, gerror.Gerror) {
+	systemInfo := system_info.NewProvider(filepath.Join(depotPath, "depot"))
 	return &guardianBackend{
 		systemInfo: systemInfo,
-	}
+	}, nil
 }
 
 func (b *guardianBackend) Ping() error {
