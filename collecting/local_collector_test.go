@@ -4,6 +4,7 @@ import (
 	api "github.com/cf-guardian/guardian-backend/temp_libcontainer_api"
 	identity "github.com/cf-guardian/guardian-backend/temp_libcontainer_api/identity"
 	"testing"
+	"github.com/docker/libcontainer"
 )
 
 var identifier identity.Identifier = identity.CreateSimpleIdentifier()
@@ -14,6 +15,38 @@ type t_container struct {
 
 func (ctr t_container) Id() api.Id {
 	return ctr.id
+}
+
+func (ctr t_container) RunState() (*libcontainer.RunState, error) {
+	panic("unimplemented test stub")
+}
+
+func (ctr t_container) Config() *libcontainer.Config {
+	panic("unimplemented test stub")
+}
+
+func (ctr t_container) Start(*libcontainer.ProcessConfig) (pid int, exitChan chan int, err error) {
+	panic("unimplemented test stub")
+}
+
+func (ctr t_container) Destroy() error {
+	panic("unimplemented test stub")
+}
+
+func (ctr t_container) Processes() ([]int, error) {
+	panic("unimplemented test stub")
+}
+
+func (ctr t_container) Stats() (*libcontainer.ContainerStats, error) {
+	panic("unimplemented test stub")
+}
+
+func (ctr t_container) Pause() error {
+	panic("unimplemented test stub")
+}
+
+func (ctr t_container) Resume() error {
+	panic("unimplemented test stub")
 }
 
 func createContainer() api.Container {
