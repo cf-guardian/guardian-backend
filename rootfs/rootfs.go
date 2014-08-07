@@ -105,7 +105,7 @@ var rootSubdirs []string = []string{`proc`, `dev`, `etc`, `home`, `sbin`, `var`,
 	directory as a base for the writable portion of generated root filesystems. The SyscallFS interface value
 	must not be nil to ensure that the caller has sufficient privileges to perform mounts, etc.
 */
-func NewRootFS(sc syscall.SyscallFS, f fileutils.Fileutils, rwBaseDir string) (RootFS, gerror.Gerror) {
+func newRootFS(sc syscall.SyscallFS, f fileutils.Fileutils, rwBaseDir string) (RootFS, gerror.Gerror) {
 	if sc == nil {
 		return nil, gerror.New(ErrNilSyscallFS, "nil SyscallFS")
 	}

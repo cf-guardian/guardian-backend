@@ -35,7 +35,7 @@ func TestNilSyscallFS(t *testing.T) {
 	mockCtrl, mockFileUtils, _ := setupMocks(t)
 	defer mockCtrl.Finish()
 
-	rfs, gerr := rootfs.NewRootFS(nil, mockFileUtils, "")
+	rfs, gerr := rootfs.WireWith("", nil, mockFileUtils)
 	if rfs != nil || !gerr.EqualTag(rootfs.ErrNilSyscallFS) {
 		t.Errorf("Incorrect return values (%s, %s)", rfs, gerr)
 		return
@@ -48,7 +48,7 @@ func TestNonExistentReadWriteBaseDir(t *testing.T) {
 
 	mockFileUtils.EXPECT().Filemode("/nosuch").Return(os.FileMode(0), gerror.New(fileutils.ErrFileNotFound, "an error"))
 
-	rfs, gerr := rootfs.NewRootFS(mockSyscallFS, mockFileUtils, "/nosuch")
+	rfs, gerr := rootfs.WireWith("/nosuch", mockSyscallFS, mockFileUtils)
 	if rfs != nil || !gerr.EqualTag(rootfs.ErrRwBaseDirMissing) {
 		t.Errorf("Incorrect return values (%s, %s)", rfs, gerr)
 		return
@@ -65,7 +65,7 @@ func TestNonDirReadWriteBaseDir(t *testing.T) {
 	filePath := test_support.CreateFile(tempDir, "testFile")
 	mockFileUtils.EXPECT().Filemode(filePath).Return(os.FileMode(0700), nil)
 
-	rfs, gerr := rootfs.NewRootFS(mockSyscallFS, mockFileUtils, filePath)
+	rfs, gerr := rootfs.WireWith(filePath, mockSyscallFS, mockFileUtils)
 	if rfs != nil || !gerr.EqualTag(rootfs.ErrRwBaseDirIsFile) {
 		t.Errorf("Incorrect return values (%s, %s)", rfs, gerr)
 		return
@@ -82,7 +82,7 @@ func TestReadOnlyReadWriteBaseDir(t *testing.T) {
 	dirPath := test_support.CreateDirWithMode(tempDir, "test-rootfs", os.FileMode(0400))
 	mockFileUtils.EXPECT().Filemode(dirPath).Return(os.ModeDir|os.FileMode(0100), nil)
 
-	rfs, gerr := rootfs.NewRootFS(mockSyscallFS, mockFileUtils, dirPath)
+	rfs, gerr := rootfs.WireWith(dirPath, mockSyscallFS, mockFileUtils)
 	if rfs != nil || !gerr.EqualTag(rootfs.ErrRwBaseDirNotRw) {
 		t.Errorf("Incorrect return values (%s, %s)", rfs, gerr)
 		return
@@ -97,7 +97,7 @@ func TestGenerate(t *testing.T) {
 	defer test_support.CleanupDirs(t, tempDir)
 
 	mockFileUtils.EXPECT().Filemode(tempDir).Return(os.ModeDir|os.FileMode(0700), nil)
-	rfs, gerr := rootfs.NewRootFS(mockSyscallFS, mockFileUtils, tempDir)
+	rfs, gerr := rootfs.WireWith(tempDir, mockSyscallFS, mockFileUtils)
 	if gerr != nil {
 		t.Errorf("%s", gerr)
 		return
@@ -142,7 +142,7 @@ func testGenerateBackoutAfterBindMountReadWriteError(i int, t *testing.T) {
 	defer test_support.CleanupDirs(t, tempDir)
 
 	mockFileUtils.EXPECT().Filemode(tempDir).Return(os.ModeDir|os.FileMode(0700), nil)
-	rfs, gerr := rootfs.NewRootFS(mockSyscallFS, mockFileUtils, tempDir)
+	rfs, gerr := rootfs.WireWith(tempDir, mockSyscallFS, mockFileUtils)
 	if gerr != nil {
 		t.Errorf("%s", gerr)
 		return
@@ -187,7 +187,7 @@ func TestRemove(t *testing.T) {
 	defer test_support.CleanupDirs(t, tempDir)
 
 	mockFileUtils.EXPECT().Filemode(tempDir).Return(os.ModeDir|os.FileMode(0700), nil)
-	rfs, gerr := rootfs.NewRootFS(mockSyscallFS, mockFileUtils, tempDir)
+	rfs, gerr := rootfs.WireWith(tempDir, mockSyscallFS, mockFileUtils)
 	if gerr != nil {
 		t.Errorf("%s", gerr)
 		return
@@ -223,7 +223,7 @@ func testRemoveUnmountSubdirFailure(i int, t *testing.T) {
 	defer test_support.CleanupDirs(t, tempDir)
 
 	mockFileUtils.EXPECT().Filemode(tempDir).Return(os.ModeDir|os.FileMode(0700), nil)
-	rfs, gerr := rootfs.NewRootFS(mockSyscallFS, mockFileUtils, tempDir)
+	rfs, gerr := rootfs.WireWith(tempDir, mockSyscallFS, mockFileUtils)
 	if gerr != nil {
 		t.Errorf("%s", gerr)
 		return
@@ -259,7 +259,7 @@ func TestRemoveUnmountRootFailure(t *testing.T) {
 	defer test_support.CleanupDirs(t, tempDir)
 
 	mockFileUtils.EXPECT().Filemode(tempDir).Return(os.ModeDir|os.FileMode(0700), nil)
-	rfs, gerr := rootfs.NewRootFS(mockSyscallFS, mockFileUtils, tempDir)
+	rfs, gerr := rootfs.WireWith(tempDir, mockSyscallFS, mockFileUtils)
 	if gerr != nil {
 		t.Errorf("%s", gerr)
 		return

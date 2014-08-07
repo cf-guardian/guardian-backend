@@ -76,8 +76,8 @@ type Fileutils interface {
 type futils struct {
 }
 
-func New() Fileutils {
-	return &futils{}
+func newFileutils() (Fileutils, gerror.Gerror) {
+	return &futils{}, nil
 }
 
 func (f *futils) Copy(destPath string, srcPath string) gerror.Gerror {

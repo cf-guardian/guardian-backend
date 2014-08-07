@@ -31,7 +31,7 @@ func TestErrorIds(t *testing.T) {
 }
 
 func TestCopyFile(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer os.RemoveAll(td)
@@ -47,7 +47,7 @@ func TestCopyFile(t *testing.T) {
 }
 
 func TestCopyNonExistent(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer os.RemoveAll(td)
@@ -62,7 +62,7 @@ func TestCopyNonExistent(t *testing.T) {
 }
 
 func TestCopySameFile(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -77,7 +77,7 @@ func TestCopySameFile(t *testing.T) {
 }
 
 func TestCopyFileMode(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -97,7 +97,7 @@ func TestCopyFileMode(t *testing.T) {
 }
 
 func TestCopyDirectoryToNew(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -122,7 +122,7 @@ func TestCopyDirectoryToNew(t *testing.T) {
 }
 
 func TestCopyDirectoryNestedToNew(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -150,7 +150,7 @@ func TestCopyDirectoryNestedToNew(t *testing.T) {
 }
 
 func TestCopyDirectoryToExisting(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -178,7 +178,7 @@ func TestCopyDirectoryToExisting(t *testing.T) {
 }
 
 func TestCopyDirMode(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -198,7 +198,7 @@ func TestCopyDirMode(t *testing.T) {
 }
 
 func TestCopyDirInternalSymlink(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -247,7 +247,7 @@ func TestCopyDirInternalSymlink(t *testing.T) {
 }
 
 func TestCopyDirInternalFileSymlink(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -293,7 +293,7 @@ func TestCopyDirInternalFileSymlink(t *testing.T) {
 }
 
 func TestCopyDirExternalSymlink(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -321,7 +321,7 @@ func TestCopyDirExternalSymlink(t *testing.T) {
 }
 
 func TestCopyDirInternalRelativeSymlink(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -350,7 +350,7 @@ func TestCopyDirInternalRelativeSymlink(t *testing.T) {
 }
 
 func TestCopyDirExternalRelativeSymlink(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -381,7 +381,7 @@ func TestCopyDirExternalRelativeSymlink(t *testing.T) {
 }
 
 func TestCopyFileSymlink(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -399,7 +399,7 @@ func TestCopyFileSymlink(t *testing.T) {
 }
 
 func TestCopyFileSameSymlink(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
@@ -416,7 +416,7 @@ func TestCopyFileSameSymlink(t *testing.T) {
 }
 
 func TestExistsDir(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
 
@@ -427,7 +427,7 @@ func TestExistsDir(t *testing.T) {
 }
 
 func TestExistsFile(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 	td := test_support.CreateTempDir()
 	defer test_support.CleanupDirs(t, td)
 
@@ -439,7 +439,7 @@ func TestExistsFile(t *testing.T) {
 }
 
 func TestExistsFalse(t *testing.T) {
-	f := createFileutils()
+	f := createFileutils(t)
 	path := "/nosuch"
 	exists := f.Exists(path)
 	if exists {
@@ -447,8 +447,12 @@ func TestExistsFalse(t *testing.T) {
 	}
 }
 
-func createFileutils() fileutils.Fileutils {
-	return fileutils.New()
+func createFileutils(t *testing.T) fileutils.Fileutils {
+	f, err := fileutils.Wire()
+	if err != nil {
+		t.Errorf("Failed to write Fileutils")
+	}
+	return f
 }
 
 func check(err error) {
