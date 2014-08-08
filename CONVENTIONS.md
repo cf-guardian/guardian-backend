@@ -202,4 +202,4 @@ example when the package provides more than one implementation of
 the interface.
 
 For a prototypical example of the use of `Wire` and `WireWith`, with dependencies, see
-[guardian_backend](https://github.com/cf-guardian/guardian-backend/guardian_backend/wiring.go).
+[guardian_backend](https://github.com/cf-guardian/guardian-backend/blob/master/guardian_backend/wiring.go).
