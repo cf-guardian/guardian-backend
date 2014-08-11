@@ -35,7 +35,7 @@ all formatted by `go fmt`.
 This can be automated by putting a symbolic link to
 `development/pre-commit-hook/pre-commit` in the `.git/hooks` directory for the
 repository. (See step 5 in [Setting up a development
-environment](DEVELOPMENT.md#settingupadevelopmentenvironment).)
+environment](DEVELOPMENT.md#setting-up-a-development-environment).)
 
 ## Diagnostics
 
@@ -85,7 +85,7 @@ We intend to run ‘independant’ tests, that is, to test an implementation
 without driving the full implementation of the code it depends upon.
 
 How is this achieved? By designing the mainline code with [Dependency
-injection](#dependencyinjection) and exploiting that in our tests.
+injection](#dependency-injection) and exploiting that in our tests.
 
 To get this to work, we need to have test versions of the
 *dependencies* of something we are testing, so that we can check they are

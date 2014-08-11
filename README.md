@@ -17,7 +17,7 @@ In this document we outline:
 
 * [Objectives](#objectives) of the development
 * where to get the [Documentation](#documentation), and
-* how the repository is [layed out](#repositorylayout).
+* how the repository is [layed out](#repository-layout).
 
 We refer you to other documents for:
 

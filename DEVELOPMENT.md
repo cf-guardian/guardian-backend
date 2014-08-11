@@ -46,8 +46,9 @@ we have tried to follow.
     command.
 
 6.  For optional setup, see the following [Development
-    scripts](#developmentscripts) section, and the sections on
-    [`gomock`](#gomock) and [Editing](#editing).
+    scripts](#development-scripts) and [Editing](#editing) sections, and the
+    [`gomock`](CONVENTIONS.md#gomock) section in the
+    [Conventions](CONVENTIONS.md) document.
 
 ### Development scripts
 
@@ -81,7 +82,9 @@ environment in its shell.
 #### `update_mocks`
 
 The **`update_mocks`** script will update the mocked interfaces used in
-the unit tests. See the [`gomock`](CONVENTIONS.md#gomock) section in [Testing](#testing) below.
+the unit tests. See the [`gomock`](CONVENTIONS.md#gomock) section in the
+[Conventions](CONVENTIONS.md) document and the
+[Testing](#testing) section below.
 
 ## Testing
 
