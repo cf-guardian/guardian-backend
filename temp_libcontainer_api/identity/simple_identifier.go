@@ -15,8 +15,8 @@ type simpleIdentifier struct {
 // implementation parameters
 const (
 	idPrefix string = "SI"
-	idLength int    = 22
-	idFormat string = "SI%020d" // consistent with idPrefix and idLength
+	//	idLength int    = 22 // not used
+	idFormat string = idPrefix + "%020d"
 )
 
 func CreateSimpleIdentifier() Identifier {
