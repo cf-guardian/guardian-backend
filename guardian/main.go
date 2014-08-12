@@ -8,5 +8,5 @@ import (
 
 // Main program for warden server with guardian backend.
 func main() {
-	os.Exit(<-server.StartServer(options.Parse()))
+	os.Exit(<-server.StartServer(options.Parse(os.Args)))
 }
