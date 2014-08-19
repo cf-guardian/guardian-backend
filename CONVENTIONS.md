@@ -77,11 +77,11 @@ and so the logging verbosity should be set during testing using `-vmodule=*=`.
 
 See the [glog documentation](http://godoc.org/github.com/golang/glog) for further information.
 
-## Independant unit testing
+## Independent unit testing
 
 Unit tests are (supposed to be) comprehensive and based around the interface types.
 
-We intend to run ‘independant’ tests, that is, to test an implementation
+We intend to run ‘independent’ tests, that is, to test an implementation
 without driving the full implementation of the code it depends upon.
 
 How is this achieved? By designing the mainline code with [Dependency
