@@ -13,7 +13,13 @@ import (
 )
 
 func StartServer(opts *options.Options) <-chan int {
-	backend := guardian_backend.New(opts.DepotPath)
+	backend, err := guardian_backend.Wire(opts.DepotPath, opts.DepotPath)
+	if err != nil {
+		log.Printf("StartServer failed to wire GuardianBackend: ", err)
+		exitChan := make(chan int, 1)
+		exitChan<-1
+		return exitChan
+	}
 	return runServer(backend, opts)
 }
 

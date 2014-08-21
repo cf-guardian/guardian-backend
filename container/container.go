@@ -3,7 +3,8 @@ package container
 import (
 	"fmt"
 	"github.com/cloudfoundry-incubator/garden/warden"
-	"github.com/docker/libcontainer"
+	libcontainer "github.com/cf-guardian/guardian-backend/temp_libcontainer_api"
+	docker_libc "github.com/docker/libcontainer"
 	"io"
 )
 
@@ -27,7 +28,7 @@ type container struct {
 	libcontainer libcontainer.Container
 }
 
-func config(spec warden.ContainerSpec) (*libcontainer.Config, error) {
+func config(spec warden.ContainerSpec) (*docker_libc.Config, error) {
 	panic("unimplemented")
 }
 
