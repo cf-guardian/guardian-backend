@@ -10,6 +10,7 @@ import (
 	"github.com/cf-guardian/guardian-backend/utils"
 	"github.com/cloudfoundry-incubator/garden/server"
 	"github.com/cloudfoundry-incubator/garden/warden"
+	"github.com/pivotal-golang/lager"
 )
 
 func StartServer(opts *options.Options) <-chan int {
@@ -24,7 +25,8 @@ func StartServer(opts *options.Options) <-chan int {
 }
 
 func runServer(backend warden.Backend, opts *options.Options) <-chan int {
-	wardenServer := server.New(opts.ListenNetwork, opts.ListenAddr, opts.GraceTime, backend)
+	logger := lager.NewLogger("guardian")
+	wardenServer := server.New(opts.ListenNetwork, opts.ListenAddr, opts.GraceTime, backend, logger)
 	err := wardenServer.Start()
 	if err != nil {
 		log.Fatalln("failed to start server:", err)
